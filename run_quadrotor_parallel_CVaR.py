@@ -26,6 +26,7 @@ print(f"Running multi-step simulation for {NUM_STEPS} steps...")
 # === 3. Batched initial conditions and parameters ===
 # State: [p_x, p_z, theta, v_x, v_z, omega]
 x0 = torch.zeros((BATCH_SIZE, 6), device=device, dtype=dtype)
+x0[:, 0] = torch.linspace(-0.5, 0.5, BATCH_SIZE, device=device, dtype=dtype) 
 x0[:, 1] = 1.0   # all start at p_z = 1m (same initial state for MC)
 
 m_val = 1.0
@@ -68,8 +69,8 @@ wind_std = 0.2
 
 for step in range(NUM_STEPS):
     # Resample disturbance each step for Monte Carlo
+    
     w = wind_std * torch.randn((BATCH_SIZE, 2), device=device, dtype=dtype)
-
     # One-step dynamics
     fn_cusadi_quad_step.evaluate([x, u, w, m, I, l, g, dt])
     x = fn_cusadi_quad_step.outputs_sparse[0].clone()

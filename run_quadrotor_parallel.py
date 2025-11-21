@@ -56,7 +56,7 @@ u[:, 1] = T_hover
 # Disturbance: random wind [w_x, w_z]
 # For now: i.i.d. Gaussian; in MPC you would resample per step
 wind_std = 0.2
-w = wind_std * torch.randn((BATCH_SIZE, 2), device=device, dtype=dtype)
+# w = wind_std * torch.randn((BATCH_SIZE, 2), device=device, dtype=dtype)
 
 # === 4. Multi-step parallel simulation ===
 x = x0.clone()
@@ -68,7 +68,7 @@ print(fn_casadi_quad_step)
 for step in range(NUM_STEPS):
     # Option 1: fixed disturbance per env
     # Option 2 (more stochastic): resample w each step:
-    # w = wind_std * torch.randn((BATCH_SIZE, 2), device=device, dtype=dtype)
+    w = wind_std * torch.randn((BATCH_SIZE, 2), device=device, dtype=dtype)
 
     fn_cusadi_quad_step.evaluate([x, u, w, m, I, l, g, dt])
     x = fn_cusadi_quad_step.outputs_sparse[0].clone()
@@ -104,7 +104,7 @@ for a in ax:
 
 fig.tight_layout()
 os.makedirs('results', exist_ok=True)
-fig_path = os.path.join('results', f'quadrotor_trajectories_first_{N_PLOTS}.png')
+fig_path = os.path.join('results', f'quadrotor_trajectories_first_{N_PLOTS}_norisk.png')
 fig.savefig(fig_path, dpi=150)
 print(f"✅ Figure saved to: {fig_path}")
 plt.show()
