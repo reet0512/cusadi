@@ -21,10 +21,10 @@ set(CMAKE_CXX_STANDARD 11)
 # Set CUDA flags
 set(CUDA_NVCC_FLAGS ${CUDA_NVCC_FLAGS}; -O3 -arch=sm_86 --use_fast_math)  # Adjust architecture as needed
 
-set(FN_QUAD_STEP_SOURCE codegen/fn_quad_step.cu)
+set(FN_QUAD_SIM_STEP_3D_SOURCE codegen/fn_quad_sim_step_3d.cu)
 
 # Include directories for your header files
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library(fn_quad_step SHARED ${FN_QUAD_STEP_SOURCE})
-target_link_libraries(fn_quad_step)
+add_library(fn_quad_sim_step_3d SHARED ${FN_QUAD_SIM_STEP_3D_SOURCE})
+target_link_libraries(fn_quad_sim_step_3d)

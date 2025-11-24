@@ -100,7 +100,10 @@ x[:, 2] = 0.0   # starting orientation
 
 # logs
 px_log = torch.zeros((STEPS, PLOTS), device=device)
+# py_log = torch.zeros((STEPS, PLOTS), device=device)
 pz_log = torch.zeros((STEPS, PLOTS), device=device)
+theta_log = torch.zeros((STEPS, PLOTS), device=device)
+
 
 # chance constraint logs
 tilt_violation_t = torch.zeros((STEPS,), device=device)
@@ -143,7 +146,10 @@ for t in range(STEPS):
 
     # logging first few trajectories
     px_log[t] = x[:PLOTS, 0]
+    # py_log[t] = torch.zeros(PLOTS, device=device)  # y = 0 in 2D model
     pz_log[t] = x[:PLOTS, 1]
+    theta_log[t] = x[:PLOTS, 2]   # orientation
+
 
     # chance constraint measurements
     tilt_violation_t[t] = (torch.abs(x[:,2]) > theta_max).double().mean()
@@ -190,6 +196,9 @@ os.makedirs("results", exist_ok=True)
 plt.savefig("results/lqr_baseline_trajs.png", dpi=150)
 plt.show()
 print("Figure saved to results/lqr_baseline_trajs.png")
+
+
+
 
 # =====================================================================
 # SECTION 9 — Plot Chance Violations

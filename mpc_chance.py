@@ -131,6 +131,7 @@ alt_violation_curve = []
 
 px_log = torch.zeros((STEPS, PLOTS), device=device)
 pz_log = torch.zeros((STEPS, PLOTS), device=device)
+theta_log = torch.zeros((STEPS, PLOTS), device=device)
 
 # initial warm-start control sequence
 mean_U = u_trim.view(1,NU).repeat(HORIZON,1)
@@ -157,6 +158,7 @@ for t in range(STEPS):
 
     px_log[t] = x_eval[:PLOTS,0]
     pz_log[t] = x_eval[:PLOTS,1]
+    theta_log[t] = x_eval[:PLOTS,2]
 
 torch.cuda.synchronize()
 print("Deterministic shooting MPC done.")
